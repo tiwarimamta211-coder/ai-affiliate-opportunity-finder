@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Affiliate Opportunity Finder | IncomeAIHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --bg-alt:#111118;
+    --panel:#15151d;
+    --panel-2:#1b1b26;
+    --border:#2a2a38;
+    --gold:#d4af37;
+    --gold-soft:#f0d878;
+    --emerald:#2ecc9c;
+    --violet:#8b6ef2;
+    --text:#f1f0ec;
+    --text-dim:#9a97a8;
+    --text-faint:#605d70;
+    --danger:#ef5a6f;
+    --radius:14px;
+    --font-display:'Syne',sans-serif;
+    --font-body:'DM Sans',sans-serif;
+    --font-mono:'DM Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:
+      radial-gradient(circle at 15% 0%, rgba(139,110,242,0.08), transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(212,175,55,0.07), transparent 45%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.5;
+    min-height:100vh;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--gold);color:#0a0a0f;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(10,10,15,0.85);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+    padding:16px 24px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-mark{
+    width:38px;height:38px;border-radius:10px;
+    background:linear-gradient(135deg,var(--gold),var(--emerald));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);font-weight:800;color:#0a0a0f;font-size:18px;
+    flex-shrink:0;
+  }
+  .brand-text h1{font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:0.2px;}
+  .brand-text span{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);}
+  .header-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--font-body);font-weight:600;font-size:13px;
+    padding:10px 18px;border-radius:10px;border:1px solid var(--border);
+    background:var(--panel);color:var(--text);cursor:pointer;
+    transition:all .2s ease;white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--gold);transform:translateY(-1px);}
+  .btn-gold{
+    background:linear-gradient(135deg,var(--gold),var(--gold-soft));
+    color:#0a0a0f;border:none;
+  }
+  .btn-ghost{background:transparent;}
+  .lock-pill{
+    font-family:var(--font-mono);font-size:11px;padding:6px 12px;border-radius:20px;
+    border:1px solid var(--border);color:var(--text-dim);display:flex;align-items:center;gap:6px;
+  }
+  .lock-pill.unlocked{border-color:var(--emerald);color:var(--emerald);}
+  .lock-pill.locked{border-color:var(--gold);color:var(--gold);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    max-width:1100px;margin:0 auto;padding:56px 24px 24px;text-align:center;
+  }
+  .hero-eyebrow{
+    font-family:var(--font-mono);font-size:12px;color:var(--emerald);
+    letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;
+  }
+  .hero h2{
+    font-family:var(--font-display);font-size:clamp(28px,5vw,46px);font-weight:800;
+    line-height:1.12;letter-spacing:-0.5px;
+    background:linear-gradient(135deg,var(--text) 30%,var(--gold-soft) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p{
+    color:var(--text-dim);max-width:640px;margin:16px auto 0;font-size:15.5px;
+  }
+
+  /* ---------- MAIN LAYOUT ---------- */
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px 80px;}
+  .panel{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:26px;margin-top:24px;
+  }
+  .panel-title{
+    font-family:var(--font-display);font-size:19px;font-weight:700;margin-bottom:6px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .panel-sub{color:var(--text-dim);font-size:13.5px;margin-bottom:20px;}
+  .badge{
+    font-family:var(--font-mono);font-size:10.5px;padding:3px 9px;border-radius:20px;
+    background:rgba(139,110,242,0.15);color:var(--violet);border:1px solid rgba(139,110,242,0.3);
+  }
+
+  /* form */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:640px){.form-grid{grid-template-columns:1fr;}}
+  .field label{
+    display:block;font-size:12.5px;font-weight:600;color:var(--text-dim);margin-bottom:7px;
+    font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.5px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;background:var(--bg-alt);border:1px solid var(--border);color:var(--text);
+    padding:12px 14px;border-radius:10px;font-family:var(--font-body);font-size:14px;
+    outline:none;transition:border-color .2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--gold);}
+  .field-full{grid-column:1/-1;}
+  .chip-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+  .chip{
+    padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg-alt);
+    font-size:12.5px;cursor:pointer;color:var(--text-dim);transition:all .15s;
+  }
+  .chip.active{background:rgba(212,175,55,0.15);border-color:var(--gold);color:var(--gold-soft);}
+
+  .btn-find{
+    margin-top:22px;width:100%;padding:15px;font-size:15px;font-family:var(--font-display);
+    font-weight:700;border-radius:12px;border:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--emerald),var(--gold));color:#0a0a0f;
+    transition:transform .15s;
+  }
+  .btn-find:hover{transform:translateY(-2px);}
+  .btn-find:disabled{opacity:0.55;cursor:not-allowed;transform:none;}
+
+  /* loader */
+  .loader{display:none;align-items:center;gap:10px;color:var(--text-dim);font-size:13px;margin-top:14px;font-family:var(--font-mono);}
+  .loader.show{display:flex;}
+  .spinner{
+    width:16px;height:16px;border-radius:50%;border:2px solid var(--border);
+    border-top-color:var(--gold);animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* results */
+  #resultsArea{margin-top:8px;}
+  .result-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+  .filter-bar{display:flex;gap:8px;flex-wrap:wrap;}
+  .opp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:760px){.opp-grid{grid-template-columns:1fr;}}
+  .opp-card{
+    background:var(--panel-2);border:1px solid var(--border);border-radius:12px;padding:20px;
+    display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;
+  }
+  .opp-card::before{
+    content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+    background:linear-gradient(180deg,var(--gold),var(--emerald));
+  }
+  .opp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .opp-name{font-family:var(--font-display);font-size:16.5px;font-weight:700;}
+  .opp-cat{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+  .fit-score{
+    font-family:var(--font-mono);font-size:11px;padding:4px 10px;border-radius:20px;flex-shrink:0;
+    white-space:nowrap;
+  }
+  .fit-high{background:rgba(46,204,156,0.15);color:var(--emerald);border:1px solid rgba(46,204,156,0.3);}
+  .fit-med{background:rgba(212,175,55,0.15);color:var(--gold-soft);border:1px solid rgba(212,175,55,0.3);}
+  .fit-low{background:rgba(154,151,168,0.12);color:var(--text-dim);border:1px solid var(--border);}
+  .opp-meta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--font-mono);font-size:12px;color:var(--text-dim);}
+  .opp-meta b{color:var(--gold-soft);}
+  .opp-reason{font-size:13px;color:var(--text-dim);line-height:1.55;}
+  .opp-actions{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
+  .opp-actions button{
+    flex:1;min-width:110px;padding:9px 12px;border-radius:8px;border:1px solid var(--border);
+    background:var(--bg-alt);color:var(--text);font-size:12px;cursor:pointer;font-family:var(--font-body);font-weight:600;
+    transition:all .15s;
+  }
+  .opp-actions button:hover{border-color:var(--gold);}
+  .opp-actions button.saved{border-color:var(--emerald);color:var(--emerald);}
+
+  /* calculator */
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  @media(max-width:640px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-result{
+    margin-top:18px;padding:20px;border-radius:12px;background:var(--bg-alt);
+    border:1px solid var(--border);display:flex;justify-content:space-around;flex-wrap:wrap;gap:16px;text-align:center;
+  }
+  .calc-result .num{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--gold-soft);}
+  .calc-result .lab{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px;}
+
+  /* saved */
+  #savedArea .opp-card{opacity:1;}
+  .empty-state{text-align:center;padding:40px 20px;color:var(--text-faint);font-size:13.5px;}
+
+  /* outreach modal */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);
+    z-index:1000;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-overlay.show{display:flex;}
+  .modal-box{
+    background:var(--panel);border:1px solid var(--border);border-radius:16px;
+    max-width:560px;width:100%;max-height:85vh;overflow-y:auto;padding:28px;position:relative;
+  }
+  .modal-close{
+    position:absolute;top:16px;right:16px;background:var(--bg-alt);border:1px solid var(--border);
+    border-radius:8px;width:32px;height:32px;cursor:pointer;color:var(--text);font-size:16px;
+  }
+  .modal-box h3{font-family:var(--font-display);font-size:19px;margin-bottom:14px;padding-right:30px;}
+  .modal-box textarea{
+    width:100%;min-height:220px;background:var(--bg-alt);border:1px solid var(--border);
+    color:var(--text);padding:14px;border-radius:10px;font-family:var(--font-mono);font-size:12.5px;
+    line-height:1.6;resize:vertical;
+  }
+  .modal-box .btn{margin-top:12px;}
+
+  /* guide modal (hindi) */
+  .guide-content h4{font-family:var(--font-display);font-size:15px;margin:16px 0 8px;color:var(--gold-soft);}
+  .guide-content p, .guide-content li{font-size:13.5px;color:var(--text-dim);line-height:1.7;}
+  .guide-content ol, .guide-content ul{padding-left:20px;margin-bottom:8px;}
+
+  /* unlock modal */
+  .unlock-box{text-align:center;}
+  .unlock-box .price{font-family:var(--font-display);font-size:40px;font-weight:800;color:var(--gold-soft);margin:14px 0 4px;}
+  .unlock-box .price span{font-size:14px;color:var(--text-faint);font-family:var(--font-mono);}
+  .unlock-feats{text-align:left;margin:20px 0;display:flex;flex-direction:column;gap:10px;}
+  .unlock-feats div{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--text-dim);}
+  .unlock-feats div::before{content:'✓';color:var(--emerald);font-weight:700;flex-shrink:0;}
+
+  /* ad slot */
+  .ad-slot{
+    margin-top:24px;padding:18px;border:1px dashed var(--border);border-radius:12px;
+    text-align:center;color:var(--text-faint);font-family:var(--font-mono);font-size:11px;
+  }
+
+  /* locked overlay on results */
+  .lock-overlay{
+    position:relative;
+  }
+  .lock-overlay .blur-layer{filter:blur(6px);pointer-events:none;user-select:none;}
+  .lock-cta{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:12px;background:rgba(10,10,15,0.55);border-radius:12px;text-align:center;padding:20px;
+  }
+  .lock-cta .icon{font-size:28px;}
+  .lock-cta p{color:var(--text-dim);font-size:13px;max-width:260px;}
+
+  footer{
+    text-align:center;padding:30px 20px;color:var(--text-faint);font-size:12px;font-family:var(--font-mono);
+    border-top:1px solid var(--border);
+  }
+  footer a{color:var(--gold-soft);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">A</div>
+    <div class="brand-text">
+      <h1>AI Affiliate Opportunity Finder</h1>
+      <span>IncomeAIHub · by M.Dev</span>
+    </div>
+  </div>
+  <div class="header-actions">
+    <span class="lock-pill locked" id="lockPill">🔒 Locked</span>
+    <button class="btn btn-ghost" onclick="openGuide()">हिंदी गाइड</button>
+    <button class="btn btn-gold" onclick="openUnlock()" id="unlockBtn">Unlock ₹149</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">AI-Powered · Niche Matching · India-Ready</div>
+  <h2>Apne niche ke liye best affiliate programs, ek click me dhundo</h2>
+  <p>Apna niche, audience aur platform batao — AI turant relevant affiliate programs, commission rates aur outreach templates de dega. Blog, YouTube, Instagram ya website — sabke liye kaam karta hai.</p>
+</section>
+
+<div class="wrap">
+
+  <!-- ============ FINDER FORM ============ -->
+  <div class="panel">
+    <div class="panel-title">🔎 Opportunity Finder <span class="badge">AI</span></div>
+    <div class="panel-sub">Apni niche details bharein, AI aapke liye best-fit affiliate programs suggest karega</div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Niche / Topic</label>
+        <input type="text" id="nicheInput" placeholder="e.g. personal finance, fitness, web hosting reviews">
+      </div>
+      <div class="field">
+        <label>Audience Location</label>
+        <select id="audienceLocation">
+          <option value="India">India</option>
+          <option value="Global">Global</option>
+          <option value="India + Global">India + Global</option>
+        </select>
+      </div>
+      <div class="field field-full">
+        <label>Platform (select all that apply)</label>
+        <div class="chip-group" id="platformChips">
+          <div class="chip" data-val="Blog">Blog / Website</div>
+          <div class="chip" data-val="YouTube">YouTube</div>
+          <div class="chip" data-val="Instagram">Instagram</div>
+          <div class="chip" data-val="WhatsApp/Telegram">WhatsApp / Telegram</div>
+          <div class="chip" data-val="Email List">Email List</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Monthly Traffic / Audience Size</label>
+        <select id="trafficSize">
+          <option value="Under 1,000">Under 1,000</option>
+          <option value="1,000 - 10,000">1,000 – 10,000</option>
+          <option value="10,000 - 50,000">10,000 – 50,000</option>
+          <option value="50,000+">50,000+</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Preferred Commission Type</label>
+        <select id="commType">
+          <option value="Any">Any</option>
+          <option value="Recurring / Subscription">Recurring / Subscription</option>
+          <option value="One-time High Ticket">One-time High Ticket</option>
+          <option value="Per Sale (Physical Products)">Per Sale (Physical Products)</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-find" id="findBtn" onclick="findOpportunities()">✨ Find Affiliate Opportunities</button>
+    <div class="loader" id="loader"><div class="spinner"></div><span id="loaderText">AI aapke liye best programs dhundh raha hai...</span></div>
+  </div>
+
+  <!-- ============ RESULTS ============ -->
+  <div class="panel" id="resultsPanel" style="display:none;">
+    <div class="result-toolbar">
+      <div class="panel-title" style="margin-bottom:0;">📋 Matched Opportunities</div>
+      <div class="filter-bar" id="filterBar">
+        <div class="chip active" data-filter="all">All</div>
+        <div class="chip" data-filter="high">High Fit</div>
+      </div>
+    </div>
+    <div id="resultsArea"></div>
+  </div>
+
+  <!-- ============ COMMISSION CALCULATOR ============ -->
+  <div class="panel">
+    <div class="panel-title">🧮 Commission Earnings Calculator</div>
+    <div class="panel-sub">Estimate karo ki monthly kitni affiliate income ban sakti hai</div>
+    <div class="calc-grid">
+      <div class="field">
+        <label>Monthly Clicks / Visitors</label>
+        <input type="number" id="calcClicks" placeholder="e.g. 5000" value="5000">
+      </div>
+      <div class="field">
+        <label>Conversion Rate (%)</label>
+        <input type="number" id="calcConv" placeholder="e.g. 2" value="2" step="0.1">
+      </div>
+      <div class="field">
+        <label>Avg. Commission per Sale (₹)</label>
+        <input type="number" id="calcCommission" placeholder="e.g. 500" value="500">
+      </div>
+    </div>
+    <button class="btn" style="margin-top:16px;width:100%;" onclick="calculateEarnings()">Calculate Estimated Earnings</button>
+    <div class="calc-result" id="calcResult" style="display:none;">
+      <div><div class="num" id="calcSales">-</div><div class="lab">Est. Monthly Sales</div></div>
+      <div><div class="num" id="calcMonthly">-</div><div class="lab">Est. Monthly Earnings</div></div>
+      <div><div class="num" id="calcYearly">-</div><div class="lab">Est. Yearly Earnings</div></div>
+    </div>
+  </div>
+
+  <!-- ============ SAVED LIST ============ -->
+  <div class="panel">
+    <div class="panel-title">⭐ Saved Opportunities</div>
+    <div class="panel-sub">Aapke bookmark kiye hue affiliate programs</div>
+    <div id="savedArea"><div class="empty-state">Abhi tak koi program save nahi kiya. Results me se ⭐ Save par click karein.</div></div>
+    <button class="btn" style="margin-top:14px;" onclick="exportSavedCSV()">⬇ Export as CSV</button>
+  </div>
+
+  <div class="ad-slot">Advertisement Placeholder — AdSense Unit (728x90 / Responsive)</div>
+
+</div>
+
+<footer>
+  IncomeAIHub · AI Affiliate Opportunity Finder &copy; 2026 M.Dev &nbsp;|&nbsp; Built for Indian Freelancers, CAs &amp; SMBs
+</footer>
+
+<!-- ============ OUTREACH MODAL ============ -->
+<div class="modal-overlay" id="outreachModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('outreachModal')">✕</button>
+    <h3>✉ Affiliate Outreach Email</h3>
+    <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:12px;">Is program ke affiliate manager ko approach karne ke liye ready template. Copy karke apni details fill karein.</p>
+    <textarea id="outreachText" readonly></textarea>
+    <button class="btn btn-gold" onclick="copyOutreach()">📋 Copy Email</button>
+  </div>
+</div>
+
+<!-- ============ HINDI GUIDE MODAL ============ -->
+<div class="modal-overlay" id="guideModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('guideModal')">✕</button>
+    <h3>📘 इस्तेमाल कैसे करें (Hindi Guide)</h3>
+    <div class="guide-content">
+      <h4>1. Opportunity Finder</h4>
+      <p>Apna niche (jaise "personal finance" ya "fitness"), audience location, platform aur traffic size bharein. "Find Affiliate Opportunities" par click karein — AI aapke liye best-fit affiliate programs ki list banayega, har ek ke saath commission rate, cookie duration aur fit score.</p>
+      <h4>2. Fit Score kya hai?</h4>
+      <p>High Fit ka matlab hai ye program aapke niche/audience ke liye bahut suitable hai. Medium aur Low fit wale programs bhi kaam kar sakte hain, lekin thoda kam relevant hain.</p>
+      <h4>3. Commission Calculator</h4>
+      <p>Apna monthly traffic, conversion rate aur average commission daalkar estimate kar sakte hain ki har mahine kitni income ho sakti hai.</p>
+      <h4>4. Save aur Outreach</h4>
+      <p>Kisi bhi program ko ⭐ Save karke apni list me rakh sakte hain. "Outreach Email" button se us program ke affiliate manager ko contact karne ke liye ready-made email mil jayega.</p>
+      <h4>5. Unlock</h4>
+      <p>Free version me limited results milte hain. ₹149 ka one-time lifetime unlock karke unlimited AI searches, sabhi results, aur CSV export ka access milega.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ UNLOCK MODAL ============ -->
+<div class="modal-overlay" id="unlockModal">
+  <div class="modal-box unlock-box">
+    <button class="modal-close" onclick="closeModal('unlockModal')">✕</button>
+    <h3>🔓 Unlock Full Access</h3>
+    <div class="price">₹149 <span>/ lifetime</span></div>
+    <div class="unlock-feats">
+      <div>Unlimited AI-powered affiliate searches</div>
+      <div>Full unblurred results — no limits per search</div>
+      <div>Save unlimited programs to your list</div>
+      <div>CSV export of saved opportunities</div>
+      <div>Outreach email generator for every program</div>
+      <div>Free lifetime updates to this tool</div>
+    </div>
+    <button class="btn btn-gold" style="width:100%;padding:14px;" onclick="startPayment()">Pay ₹149 &amp; Unlock Now</button>
+    <p style="font-size:11px;color:var(--text-faint);margin-top:10px;">Secure payment via Razorpay · One-time payment, no subscription</p>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ==========================================================
+   CONFIG — replace with your actual Supabase project values
+   ========================================================== */
+const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const RAZORPAY_KEY_ID = "rzp_live_YOUR_KEY_ID";
+const UNLOCK_PRICE_PAISE = 14900; // ₹149
+
+let sb = null;
+try{
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}catch(e){ console.warn("Supabase init pending config", e); }
+
+/* ---------------- DEVICE ID ---------------- */
+function getDeviceId(){
+  let id = localStorage.getItem('aiaof_device_id');
+  if(!id){
+    id = 'dev_' + Date.now() + '_' + Math.random().toString(36).slice(2,11);
+    localStorage.setItem('aiaof_device_id', id);
+  }
+  return id;
+}
+
+let isUnlocked = localStorage.getItem('aiaof_unlocked') === 'true';
+
+function updateLockUI(){
+  const pill = document.getElementById('lockPill');
+  const btn = document.getElementById('unlockBtn');
+  if(isUnlocked){
+    pill.textContent = '✓ Unlocked';
+    pill.className = 'lock-pill unlocked';
+    btn.style.display = 'none';
+  } else {
+    pill.textContent = '🔒 Locked';
+    pill.className = 'lock-pill locked';
+    btn.style.display = 'inline-block';
+  }
+}
+updateLockUI();
+
+/* Check unlock status from backend on load */
+async function checkUnlockStatus(){
+  if(!sb) return;
+  try{
+    const { data, error } = await sb.functions.invoke('check-unlock', {
+      body: { deviceId: getDeviceId(), product: 'ai-affiliate-opportunity-finder' }
+    });
+    if(!error && data && data.unlocked){
+      isUnlocked = true;
+      localStorage.setItem('aiaof_unlocked', 'true');
+      updateLockUI();
+    }
+  }catch(e){ console.warn('Unlock check failed', e); }
+}
+checkUnlockStatus();
+
+/* ---------------- MODALS ---------------- */
+function openGuide(){ document.getElementById('guideModal').classList.add('show'); }
+function openUnlock(){ document.getElementById('unlockModal').classList.add('show'); }
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click', e=>{ if(e.target===m) m.classList.remove('show'); });
+});
+
+/* ---------------- PAYMENT ---------------- */
+async function startPayment(){
+  if(!sb){
+    alert('Payment system configure ho raha hai. Thodi der baad try karein.');
+    return;
+  }
+  try{
+    const { data, error } = await sb.functions.invoke('create-order', {
+      body: { amount: UNLOCK_PRICE_PAISE, product: 'ai-affiliate-opportunity-finder', deviceId: getDeviceId() }
+    });
+    if(error || !data || !data.orderId){
+      alert('Order create nahi ho paya. Dobara try karein.');
+      return;
+    }
+    const options = {
+      key: RAZORPAY_KEY_ID,
+      amount: UNLOCK_PRICE_PAISE,
+      currency: 'INR',
+      name: 'IncomeAIHub',
+      description: 'AI Affiliate Opportunity Finder — Lifetime Unlock',
+      order_id: data.orderId,
+      handler: async function(response){
+        try{
+          const verify = await sb.functions.invoke('verify-payment', {
+            body: {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              deviceId: getDeviceId(),
+              product: 'ai-affiliate-opportunity-finder'
+            }
+          });
+          if(verify.data && verify.data.verified){
+            isUnlocked = true;
+            localStorage.setItem('aiaof_unlocked','true');
+            updateLockUI();
+            closeModal('unlockModal');
+            alert('Payment successful! Ab aap full access use kar sakte hain.');
+          } else {
+            alert('Payment verify nahi ho paya. Support se contact karein.');
+          }
+        }catch(e){
+          alert('Verification error. Support se contact karein.');
+        }
+      },
+      theme: { color: '#d4af37' }
+    };
+    const rzp = new Razorpay(options);
+    rzp.open();
+  }catch(e){
+    alert('Kuch galat ho gaya. Dobara try karein.');
+  }
+}
+
+/* ---------------- PLATFORM CHIPS ---------------- */
+const selectedPlatforms = new Set();
+document.querySelectorAll('#platformChips .chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    chip.classList.toggle('active');
+    const val = chip.dataset.val;
+    if(selectedPlatforms.has(val)) selectedPlatforms.delete(val);
+    else selectedPlatforms.add(val);
+  });
+});
+
+/* ---------------- CURATED FALLBACK DATABASE ----------------
+   Used if AI proxy fails, or to enrich results, tuned for India + Global */
+const AFFILIATE_DB = [
+  {name:"Amazon Associates India", cat:"General / E-commerce", commission:"1% - 12%", cookie:"24 hrs", niches:["general","fitness","home","tech","books","fashion"], type:"Per Sale (Physical Products)"},
+  {name:"Flipkart Affiliate", cat:"General / E-commerce", commission:"1% - 15%", cookie:"1 day", niches:["general","fashion","tech","home"], type:"Per Sale (Physical Products)"},
+  {name:"Hostinger Affiliate", cat:"Web Hosting", commission:"Up to 60% per sale", cookie:"30 days", niches:["web hosting reviews","tech","blogging","website"], type:"One-time High Ticket"},
+  {name:"Bluehost Affiliate", cat:"Web Hosting", commission:"₹3000+ per sale", cookie:"90 days", niches:["web hosting reviews","tech","blogging"], type:"One-time High Ticket"},
+  {name:"Zoho Affiliate Program", cat:"SaaS / Business Tools", commission:"15% recurring", cookie:"90 days", niches:["business","saas","finance","productivity"], type:"Recurring / Subscription"},
+  {name:"Razorpay Partner Program", cat:"Fintech / Payments", commission:"Custom referral bonus", cookie:"N/A", niches:["finance","business","fintech"], type:"One-time High Ticket"},
+  {name:"Groww Affiliate", cat:"Finance / Investing", commission:"₹100 - ₹500 per signup", cookie:"30 days", niches:["personal finance","investing","finance"], type:"One-time High Ticket"},
+  {name:"Upstox Partner Program", cat:"Finance / Trading", commission:"Revenue share on brokerage", cookie:"30 days", niches:["personal finance","trading","finance"], type:"Recurring / Subscription"},
+  {name:"Semrush Affiliate", cat:"SEO / Marketing Tools", commission:"40% recurring", cookie:"120 days", niches:["marketing","seo","blogging","business"], type:"Recurring / Subscription"},
+  {name:"Systeme.io Affiliate", cat:"SaaS / Marketing", commission:"40% recurring", cookie:"365 days", niches:["marketing","business","saas","online course"], type:"Recurring / Subscription"},
+  {name:"HealthKart Affiliate", cat:"Health & Fitness", commission:"5% - 10%", cookie:"30 days", niches:["fitness","health","nutrition"], type:"Per Sale (Physical Products)"},
+  {name:"Cult.fit Affiliate", cat:"Fitness / Wellness", commission:"Flat per signup", cookie:"30 days", niches:["fitness","health","wellness"], type:"One-time High Ticket"},
+  {name:"Coursera Affiliate India", cat:"Education / Online Courses", commission:"10% - 45%", cookie:"30 days", niches:["education","online course","career"], type:"Per Sale (Physical Products)"},
+  {name:"Udemy Affiliate", cat:"Education / Online Courses", commission:"15%", cookie:"7 days", niches:["education","online course","tech","business"], type:"Per Sale (Physical Products)"},
+  {name:"Canva Affiliate", cat:"Design Tools", commission:"Up to 80% first payment + recurring", cookie:"30 days", niches:["design","marketing","content creation"], type:"Recurring / Subscription"},
+  {name:"MyProtein Affiliate", cat:"Fitness / Supplements", commission:"8% - 10%", cookie:"30 days", niches:["fitness","nutrition","health"], type:"Per Sale (Physical Products)"},
+  {name:"Nykaa Affiliate", cat:"Beauty / Fashion", commission:"5% - 12%", cookie:"30 days", niches:["fashion","beauty","lifestyle"], type:"Per Sale (Physical Products)"},
+  {name:"Booking.com Affiliate", cat:"Travel", commission:"25% - 40% of Booking.com commission", cookie:"30 days", niches:["travel","lifestyle"], type:"Per Sale (Physical Products)"},
+  {name:"MakeMyTrip Affiliate", cat:"Travel", commission:"Varies by booking type", cookie:"30 days", niches:["travel"], type:"Per Sale (Physical Products)"},
+  {name:"Freshworks Affiliate", cat:"SaaS / CRM Tools", commission:"Up to 30% recurring", cookie:"90 days", niches:["business","saas","crm"], type:"Recurring / Subscription"}
+];
+
+/* ---------------- FIND OPPORTUNITIES ---------------- */
+let currentResults = [];
+
+async function findOpportunities(){
+  const niche = document.getElementById('nicheInput').value.trim();
+  if(!niche){
+    alert('Kripya apna niche/topic likhein.');
+    return;
+  }
+  const location = document.getElementById('audienceLocation').value;
+  const traffic = document.getElementById('trafficSize').value;
+  const commType = document.getElementById('commType').value;
+  const platforms = Array.from(selectedPlatforms);
+
+  const findBtn = document.getElementById('findBtn');
+  const loader = document.getElementById('loader');
+  findBtn.disabled = true;
+  loader.classList.add('show');
+
+  let results = [];
+  try{
+    if(sb){
+      const { data, error } = await sb.functions.invoke('ai-proxy', {
+        body: {
+          task: 'affiliate-opportunity-finder',
+          niche, location, traffic, commType, platforms
+        }
+      });
+      if(!error && data && Array.isArray(data.opportunities) && data.opportunities.length){
+        results = data.opportunities;
+      }
+    }
+  }catch(e){ console.warn('AI proxy failed, using curated fallback', e); }
+
+  if(!results.length){
+    results = curatedMatch(niche, commType);
+  }
+
+  currentResults = results;
+  renderResults(results);
+  loader.classList.remove('show');
+  findBtn.disabled = false;
+}
+
+function curatedMatch(niche, commType){
+  const q = niche.toLowerCase();
+  let matches = AFFILIATE_DB.map(item=>{
+    let score = 0;
+    item.niches.forEach(n=>{
+      if(q.includes(n) || n.includes(q)) score += 2;
+      const qWords = q.split(/\s+/);
+      qWords.forEach(w=>{ if(w.length>3 && n.includes(w)) score += 1; });
+    });
+    if(commType !== 'Any' && item.type === commType) score += 2;
+    return {...item, score};
+  }).sort((a,b)=>b.score-a.score);
+
+  matches = matches.filter(m=>m.score>0);
+  if(matches.length < 6){
+    const extras = AFFILIATE_DB.filter(a=>!matches.find(m=>m.name===a.name)).slice(0, 6-matches.length);
+    matches = matches.concat(extras.map(e=>({...e, score:1})));
+  }
+
+  return matches.slice(0,12).map(m=>({
+    name: m.name,
+    category: m.cat,
+    commission: m.commission,
+    cookie: m.cookie,
+    fit: m.score >= 3 ? 'High' : m.score >= 1 ? 'Medium' : 'Low',
+    reason: `${m.cat} category "${niche}" niche ke saath align karta hai. Commission type: ${m.type}.`,
+    type: m.type
+  }));
+}
+
+function renderResults(results){
+  const panel = document.getElementById('resultsPanel');
+  const area = document.getElementById('resultsArea');
+  panel.style.display = 'block';
+  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  const visibleResults = isUnlocked ? results : results.slice(0,3);
+  const lockedCount = results.length - visibleResults.length;
+
+  let html = '<div class="opp-grid">';
+  visibleResults.forEach((r,i)=>{
+    const fitClass = r.fit === 'High' ? 'fit-high' : r.fit === 'Medium' ? 'fit-med' : 'fit-low';
+    html += `
+    <div class="opp-card">
+      <div class="opp-head">
+        <div>
+          <div class="opp-name">${escapeHtml(r.name)}</div>
+          <div class="opp-cat">${escapeHtml(r.category)}</div>
+        </div>
+        <div class="fit-score ${fitClass}">${r.fit} Fit</div>
+      </div>
+      <div class="opp-meta">
+        <span>Commission: <b>${escapeHtml(r.commission)}</b></span>
+        <span>Cookie: <b>${escapeHtml(r.cookie)}</b></span>
+      </div>
+      <div class="opp-reason">${escapeHtml(r.reason)}</div>
+      <div class="opp-actions">
+        <button onclick='saveOpportunity(${JSON.stringify(r).replace(/'/g,"&apos;")})' id="save-${i}">⭐ Save</button>
+        <button onclick='openOutreach(${JSON.stringify(r).replace(/'/g,"&apos;")})'>✉ Outreach Email</button>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+
+  if(lockedCount > 0){
+    html += `
+    <div class="lock-overlay" style="margin-top:16px;">
+      <div class="lock-cta" style="position:static;padding:26px;background:var(--bg-alt);border-radius:12px;border:1px dashed var(--border);">
+        <div class="icon">🔒</div>
+        <div style="font-family:var(--font-display);font-weight:700;font-size:15px;">${lockedCount} more matching opportunities locked</div>
+        <p>Unlock karke sabhi results, unlimited searches aur CSV export paayein — sirf ₹149 lifetime.</p>
+        <button class="btn btn-gold" onclick="openUnlock()">Unlock Full Access — ₹149</button>
+      </div>
+    </div>`;
+  }
+
+  area.innerHTML = html;
+  applyFilter('all');
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+/* ---------------- FILTER ---------------- */
+document.getElementById('filterBar').addEventListener('click', e=>{
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  document.querySelectorAll('#filterBar .chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  applyFilter(chip.dataset.filter);
+});
+function applyFilter(filter){
+  document.querySelectorAll('.opp-card').forEach(card=>{
+    const isHigh = card.querySelector('.fit-high');
+    card.style.display = (filter==='high' && !isHigh) ? 'none' : 'flex';
+  });
+}
+
+/* ---------------- SAVED LIST ---------------- */
+function getSaved(){
+  return JSON.parse(localStorage.getItem('aiaof_saved') || '[]');
+}
+function setSaved(arr){
+  localStorage.setItem('aiaof_saved', JSON.stringify(arr));
+}
+function saveOpportunity(opp){
+  if(!isUnlocked){
+    const saved = getSaved();
+    if(saved.length >= 3){
+      alert('Free version me max 3 programs save kar sakte hain. Unlock karke unlimited save karein.');
+      openUnlock();
+      return;
+    }
+  }
+  let saved = getSaved();
+  if(saved.find(s=>s.name===opp.name)){
+    alert('Ye program pehle se saved hai.');
+    return;
+  }
+  saved.push(opp);
+  setSaved(saved);
+  renderSaved();
+  alert('Saved! Neeche "Saved Opportunities" section me dekhein.');
+}
+function removeSaved(name){
+  let saved = getSaved().filter(s=>s.name!==name);
+  setSaved(saved);
+  renderSaved();
+}
+function renderSaved(){
+  const area = document.getElementById('savedArea');
+  const saved = getSaved();
+  if(!saved.length){
+    area.innerHTML = '<div class="empty-state">Abhi tak koi program save nahi kiya. Results me se ⭐ Save par click karein.</div>';
+    return;
+  }
+  let html = '<div class="opp-grid">';
+  saved.forEach(r=>{
+    const fitClass = r.fit === 'High' ? 'fit-high' : r.fit === 'Medium' ? 'fit-med' : 'fit-low';
+    html += `
+    <div class="opp-card">
+      <div class="opp-head">
+        <div>
+          <div class="opp-name">${escapeHtml(r.name)}</div>
+          <div class="opp-cat">${escapeHtml(r.category)}</div>
+        </div>
+        <div class="fit-score ${fitClass}">${r.fit} Fit</div>
+      </div>
+      <div class="opp-meta">
+        <span>Commission: <b>${escapeHtml(r.commission)}</b></span>
+        <span>Cookie: <b>${escapeHtml(r.cookie)}</b></span>
+      </div>
+      <div class="opp-actions">
+        <button onclick='openOutreach(${JSON.stringify(r).replace(/'/g,"&apos;")})'>✉ Outreach Email</button>
+        <button onclick="removeSaved('${escapeHtml(r.name)}')">🗑 Remove</button>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  area.innerHTML = html;
+}
+renderSaved();
+
+function exportSavedCSV(){
+  if(!isUnlocked){
+    alert('CSV export unlock ke baad available hai.');
+    openUnlock();
+    return;
+  }
+  const saved = getSaved();
+  if(!saved.length){ alert('Koi saved program nahi hai.'); return; }
+  let csv = 'Program Name,Category,Commission,Cookie Duration,Fit\n';
+  saved.forEach(r=>{
+    csv += `"${r.name}","${r.category}","${r.commission}","${r.cookie}","${r.fit}"\n`;
+  });
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'affiliate-opportunities.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ---------------- OUTREACH EMAIL ---------------- */
+function openOutreach(opp){
+  const template = `Subject: Partnership Inquiry — Affiliate Collaboration
+
+Hi Team ${opp.name},
+
+I run a content platform focused on [YOUR NICHE], and I'd love to explore joining your affiliate program.
+
+A quick snapshot of my audience:
+- Platform: [YOUR PLATFORM — Blog / YouTube / Instagram]
+- Monthly reach: [YOUR TRAFFIC/FOLLOWERS]
+- Audience location: [INDIA / GLOBAL]
+
+I believe ${opp.name} would be a strong fit for my audience given the ${opp.category} category and ${opp.commission} commission structure. Could you please share the application process, any special commission tiers for high-performing partners, and marketing assets I could use?
+
+Looking forward to hearing from you.
+
+Best regards,
+[YOUR NAME]
+[YOUR WEBSITE / SOCIAL LINK]
+[YOUR EMAIL]`;
+  document.getElementById('outreachText').value = template;
+  document.getElementById('outreachModal').classList.add('show');
+}
+function copyOutreach(){
+  const ta = document.getElementById('outreachText');
+  ta.select();
+  document.execCommand('copy');
+  alert('Email copy ho gaya! Ab paste karke bhej sakte hain.');
+}
+
+/* ---------------- CALCULATOR ---------------- */
+function calculateEarnings(){
+  const clicks = parseFloat(document.getElementById('calcClicks').value) || 0;
+  const conv = parseFloat(document.getElementById('calcConv').value) || 0;
+  const commission = parseFloat(document.getElementById('calcCommission').value) || 0;
+
+  const sales = Math.round(clicks * (conv/100));
+  const monthly = sales * commission;
+  const yearly = monthly * 12;
+
+  document.getElementById('calcSales').textContent = sales.toLocaleString('en-IN');
+  document.getElementById('calcMonthly').textContent = '₹' + monthly.toLocaleString('en-IN');
+  document.getElementById('calcYearly').textContent = '₹' + yearly.toLocaleString('en-IN');
+  document.getElementById('calcResult').style.display = 'flex';
+}
+</script>
+</body>
+</html>
